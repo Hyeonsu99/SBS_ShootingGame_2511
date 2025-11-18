@@ -118,9 +118,9 @@ TextureImporter:
       name: Enemy02_Idle_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 0
-        width: 84
+        width: 81
         height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -140,9 +140,9 @@ TextureImporter:
       name: Enemy02_Idle_1
       rect:
         serializedVersion: 2
-        x: 87
+        x: 88
         y: 0
-        width: 105
+        width: 103
         height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -162,9 +162,9 @@ TextureImporter:
       name: Enemy02_Idle_2
       rect:
         serializedVersion: 2
-        x: 194
+        x: 197
         y: 0
-        width: 85
+        width: 81
         height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
