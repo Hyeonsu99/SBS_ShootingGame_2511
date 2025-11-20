@@ -7,7 +7,7 @@ public class BattleSceneManager : MonoBehaviour
 
     private void Awake()
     {
-        GameObject obj;
+        GameObject obj;    
 
         obj = GameObject.Find("Player");
 
