@@ -4,7 +4,7 @@ using UnityEngine;
 public class ProjectileManager : Singleton<ProjectileManager>
 {
     [SerializeField] private GameObject[] projectilePrefabs;
-    public static Queue<Projectile>[] projectiles;
+    private static Queue<Projectile>[] projectiles;
     private int poolSize = 10;
 
     // stage 1 : p1p2p3 b1
@@ -20,8 +20,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
             projectiles[i] = new Queue<Projectile>();
 
             Allocate((Projectile.Type)i);
-        }
-        
+        }        
     }
 
     private void Allocate(Projectile.Type type)
@@ -40,12 +39,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         }
     }
 
-    public void FireProjectile(Projectile.Type type, 
-                               Vector3 spawnPos,
-                               Vector2 direction,
-                               GameObject owner,
-                               int damage,
-                               float speed)
+    public void FireProjectile(Projectile.Type type, Vector3 spawnPos,Vector2 direction,GameObject owner,int damage, float speed)
     {
         Projectile proj = GetProjectileFromPool(type);
 
@@ -54,13 +48,15 @@ public class ProjectileManager : Singleton<ProjectileManager>
             proj.transform.position = spawnPos;
             proj.gameObject.SetActive(true);
             proj.InitProjectile(type, direction, owner, damage, speed);
-        }
+        }     
     }
 
     private Projectile GetProjectileFromPool(Projectile.Type type)
     {
-        if (projectiles[(int)type].Count < 1)
+        if (projectiles[(int)type].Count <= 1)
+        {
             Allocate(type);
+        }
 
         return projectiles[(int)type].Dequeue();
     }

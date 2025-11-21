@@ -5,6 +5,7 @@ public class BattleSceneManager : MonoBehaviour
 {
     private IManager playerManager;
     private IManager scrollManager;
+    private IManager spawnManager;
     private void Awake()
     {
         GameObject obj;    
@@ -17,6 +18,10 @@ public class BattleSceneManager : MonoBehaviour
         if (obj != null)
             scrollManager = obj.GetComponent<IManager>();
 
+        obj = GameObject.Find("SpawnManager");
+        if(obj != null)
+            spawnManager = obj.GetComponent<IManager>();
+
         StartCoroutine(Gamestart());
     }
 
@@ -28,6 +33,7 @@ public class BattleSceneManager : MonoBehaviour
 
         playerManager?.GameInitialize();
         scrollManager?.GameInitialize();
+        spawnManager?.GameInitialize();
 
         for(int i = 5; i >= 0; i--)
         {
@@ -40,6 +46,8 @@ public class BattleSceneManager : MonoBehaviour
         scrollManager?.GameStart();
         
         yield return new WaitForSeconds(2f);
+
+        spawnManager?.GameStart();
     }
 
     private void Update()
@@ -48,6 +56,7 @@ public class BattleSceneManager : MonoBehaviour
         {
             playerManager?.GameTick(Time.deltaTime);
             scrollManager?.GameTick(Time.deltaTime);    
+            spawnManager.GameTick(Time.deltaTime);
         }
     }
 }

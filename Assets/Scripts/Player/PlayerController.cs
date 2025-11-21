@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour, IManager
         inputHandler = GetComponent<PlayerInput>() as IInputHandler;
         movement = GetComponent<PlayerMovement>() as IMovement;
         curWeapon = GetComponent<PlayerWeapon>() as IWeapon;
-
     }
 
     public void GameOver()

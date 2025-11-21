@@ -39,8 +39,6 @@ public class Projectile : MonoBehaviour, IMovement
         {
             col.radius = 0.1f;
             col.isTrigger = true;
-
-            
         }
 
         if (TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
@@ -88,16 +86,17 @@ public class Projectile : MonoBehaviour, IMovement
         if (collision.CompareTag(ownerTag)) // 보스가 쏜 투사체를 몬스터들이 맞으면 안되니까...
             return;
 
-        if(collision.CompareTag("DestroyArea"))
+        if (collision.CompareTag("DestroyArea"))
         {
-
+            ProjectileManager.Instance.ReturnProjectileToPool(this, type);
+            return;
         }
 
         // 나머지 상황
-        if(collision.TryGetComponent<IDamaged>(out IDamaged component))
+        if (collision.TryGetComponent<IDamaged>(out IDamaged component))
         {
             component.TakeDamage(owner, damage);
-
+            ProjectileManager.Instance.ReturnProjectileToPool(this, type);
             return;
         }
     }

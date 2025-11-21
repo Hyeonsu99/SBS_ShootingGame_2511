@@ -34,8 +34,6 @@ public class PlayerWeapon : MonoBehaviour, IWeapon
 
     public void SetFire()
     {
-        Debug.Log("น฿ป็");
-
         if (Time.time < nextFireTime)
             return;
 
@@ -52,13 +50,10 @@ public class PlayerWeapon : MonoBehaviour, IWeapon
             angle = startAngle + spreadAngle * i;
 
             fireRotation = fireTrans.rotation * Quaternion.Euler(0f, 0f, angle);
+
             Vector2 fireDir = fireRotation * Vector2.up;
-            ProjectileManager.Instance.FireProjectile(projectileType, 
-                                                      fireTrans.position,
-                                                      fireDir,
-                                                      gameObject,
-                                                      1,
-                                                      10f);
+
+            ProjectileManager.Instance.FireProjectile(projectileType, fireTrans.position, fireDir, gameObject, 1, 10f);
         }
     }
 
