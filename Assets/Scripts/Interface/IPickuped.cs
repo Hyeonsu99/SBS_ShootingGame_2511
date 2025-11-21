@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IPickuped
+public interface IPickUped
 {
-    void OnPickup(GameObject picker);
+    void OnPickup(GameObject pickup);
 }

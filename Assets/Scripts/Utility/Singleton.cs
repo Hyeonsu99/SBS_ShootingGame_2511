@@ -1,52 +1,43 @@
 using UnityEngine;
 
-// C++ ÅÆÇÃ¸´ --> C# Á¦³×¸¯
+// ÅÛÇÃ¸´ -> Á¦³×¸¯
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public static T Instance { get; private set; }
+    public static T instance {  get; private set; }
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this as T;
+            instance = this as T;
         }
         else
         {
             Destroy(gameObject);
         }
-
         DoAwake();
     }
 
-    protected virtual void DoAwake()
-    {
-
-    }
+    protected virtual void DoAwake() { }
 }
 
-
-
-public class SingletonDontDestroy<T> : MonoBehaviour where T : MonoBehaviour
+public class SingletinDontDestroy<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public static T Instance { get; private set; }
+    public static T instance { get; private set; }
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this as T;
+            instance = this as T;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
-
         DoAwake();
     }
 
-    protected virtual void DoAwake()
-    {
-
-    }
+    protected virtual void DoAwake() { }
 }
