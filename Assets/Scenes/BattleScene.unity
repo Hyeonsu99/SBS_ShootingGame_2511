@@ -714,6 +714,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1033231712}
   - component: {fileID: 1033231711}
+  - component: {fileID: 1033231713}
   m_Layer: 0
   m_Name: Background_0
   m_TagString: Untagged
@@ -794,6 +795,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1033231713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033231710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a3a04d11d313943b47ad8248df31ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HorizontalScroll
+  scrollSpeed: 0
 --- !u!1 &1199626891
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,6 +1244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1462815469}
   - component: {fileID: 1462815468}
+  - component: {fileID: 1462815470}
   m_Layer: 0
   m_Name: Background_0 (1)
   m_TagString: Untagged
@@ -1310,6 +1325,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1462815470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462815467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a3a04d11d313943b47ad8248df31ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HorizontalScroll
+  scrollSpeed: 0
 --- !u!1 &1610370884
 GameObject:
   m_ObjectHideFlags: 0
