@@ -6,42 +6,38 @@ public class BattleSceneManager : MonoBehaviour
     private IManager playerManager;
     private IManager scrollManager;
     private IManager spawnManager;
-    private bool isPlaying = false;
 
     private void Awake()
     {
-        GameObject obj;
-        obj = GameObject.Find("Player");
-
-        if (obj != null )
-            playerManager = obj.GetComponent<IManager>();
-
-        obj = GameObject.Find("ScrollManager");
-
-        if (obj != null)
-            scrollManager = obj.GetComponent<IManager>();
-
-        obj = GameObject.Find("SpawnManager");
-
-        if (obj != null)
-            spawnManager = obj.GetComponent<IManager>();
-        StartCoroutine(GameStart());
+        GameObject go;
+        go = GameObject.Find("Player");
+        if (go != null)
+            go.TryGetComponent<IManager>(out playerManager);
+        go = GameObject.Find("ScrollManager");
+        if (go != null) 
+            go.TryGetComponent<IManager>(out scrollManager);
+        go = GameObject.Find("SpawnManager");
+        if (go != null)
+            go.TryGetComponent<IManager>(out spawnManager);
+        StartCoroutine("GameStart");
     }
+
+    bool isPlaying = false;
 
     IEnumerator GameStart()
     {
         yield return null;
-        playerManager?.GameInit();
-        scrollManager?.GameInit();
-        spawnManager?.GameInit();
+        playerManager?.GameInitialize();
+        scrollManager?.GameInitialize();
+        spawnManager?.GameInitialize();
 
-        for(int i = 5; i >= 0; --i)
+        for (int i = 5; i >= 0; --i)
         {
-            Debug.Log($"°ÔÀÓ ½ÃÀÛ ÁØºñÁß...{i}");
+            Debug.Log($"ê²Œìž„ ì‹œìž‘ ì¤€ë¹„ì¤‘...{i}");
             yield return new WaitForSeconds(1f);
         }
-        isPlaying = true;
 
+        isPlaying = true;
         playerManager?.GameStart();
         scrollManager?.GameStart();
         yield return new WaitForSeconds(2f);
@@ -50,12 +46,10 @@ public class BattleSceneManager : MonoBehaviour
 
     private void Update()
     {
-        if(isPlaying)
+        if (isPlaying)
         {
             playerManager?.GameTick(Time.deltaTime);
             scrollManager?.GameTick(Time.deltaTime);
-            spawnManager?.GameTick(Time.deltaTime);
         }
     }
 }
-

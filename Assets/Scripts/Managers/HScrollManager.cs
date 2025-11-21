@@ -1,49 +1,43 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HScrollManager : MonoBehaviour, IManager
 {
     private List<IScroller> scrollers = new List<IScroller>();
-
-    [SerializeField] private float scrollSpeed = 4f;
-
-    public void GameInit()
+    [SerializeField] private float scrollSpeed = 4;
+    public void GameInitialize()
     {
         scrollers.Clear();
-        scrollers = InterfaceFinder.FindObjectsOfInterface2<IScroller>();
-        //FindObjectsByType<IScroller>(FindObjectsSortMode.None);
-        // interfacefind
-    }
-
-    public void GameOver()
-    {
-
-    }
-
-    public void GamePause()
-    {
-
-    }
-
-    public void GameResume()
-    {
-
+        scrollers = InterfaceFinder.FindObjectsOfInterface<IScroller>();
     }
 
     public void GameStart()
     {
-        foreach(var c  in scrollers)
+        foreach (IScroller c in scrollers)
         {
             c.SetScrollSpeed(scrollSpeed);
         }
     }
 
+    public void GamePause()
+    {
+    }
+
+    public void GameResume()
+    {
+    }
+
+    public void GameOver()
+    {
+        
+    }
+
     public void GameTick(float delta)
     {
-        foreach(var c in scrollers)
+        foreach(IScroller c in scrollers)
         {
             c.Scroll(delta);
         }
     }
+
 }

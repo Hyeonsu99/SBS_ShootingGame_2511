@@ -7,58 +7,51 @@ public class EnemySpawnManager : MonoBehaviour, IManager
     [SerializeField] private Transform[] spawnTrans;
     [SerializeField] private GameObject[] spawnPrefabs;
 
-    public static Action OnSpawnFinish; // ÀÏ¹Ý ¸ó½ºÅÍ ½ºÆùÀÌ Á¾·áµÇ¾ú´Ù.
+    public static Action OnSpawnFinish; // ì¼ë°˜ ëª¬ìŠ¤í„° ìŠ¤í°ì´ ì¢…ë£Œë¨ì„ ì•Œë¦¼
 
     private float spawnDelta = 1f;
     private int spawnLevel = 0;
     private int spawnCount = 7;
 
-    // ¿þÀÌºêÀÇ Á¤ÀÇ
-    // wave -> ÀÏ¹Ý ¸ó½ºÅÍ 7¹ø + º¸½º 1¹ø
+    public static Action OnBossDead;
 
-    public void GameInit()
+    public void GameInitialize()
     {
         spawnLevel = 0;
         spawnCount = 7;
         spawnDelta = 1f;
 
-        StartCoroutine(StartWave());
     }
 
     public void GameOver()
     {
-
     }
 
     public void GamePause()
     {
-
     }
 
     public void GameResume()
     {
-
     }
 
     public void GameStart()
     {
-
+        StartCoroutine(StartWave());
     }
 
     public void GameTick(float delta)
     {
-
     }
-
     private GameObject go;
     IEnumerator StartWave()
     {
-        while(spawnCount > 0)
+        while (spawnCount > 0)
         {
-            for(int i = 0; i < spawnTrans.Length; i++)
+            for (int i = 0; i < spawnTrans.Length; ++i)
             {
                 go = Instantiate(spawnPrefabs[spawnLevel], spawnTrans[i].position, Quaternion.identity);
-                if(go.TryGetComponent<Enemy>(out Enemy enemy))
+                if (go.TryGetComponent<Enemy>(out Enemy enemy))
                 {
                     enemy.SetEnable(true);
                 }
@@ -68,12 +61,13 @@ public class EnemySpawnManager : MonoBehaviour, IManager
         }
         OnSpawnFinish?.Invoke();
 
-        //º¸½º »ý¼º
+        // ë³´ìŠ¤ ìƒì„±
 
         spawnLevel++;
-        if (spawnLevel >= 3)
+        if(spawnLevel >= 3)
+        {
             spawnLevel = 0;
-
+        }
         spawnCount = 7;
     }
 }

@@ -1,34 +1,24 @@
 using System;
-using System.Collections;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class Enemy : MonoBehaviour, IMovement, IDamaged
 {
-    private Vector2 moveDir;
-    private float moveSpeed = 3f;
-    private bool isInit = false;
+    Vector2 moveDir = Vector2.down;
+    float moveSpeed = 3f;
+    bool isInit = false;
 
     private int curHP;
-    private int maxHP = 10;
+    [SerializeField] private int maxHP = 10;
 
-    public bool isDead { get => curHP <= 0; }
+    public bool IsDead { get => curHP <= 0; }
 
     public delegate void MonsterDiedEvent(Enemy enemyInfo);
     public static event MonsterDiedEvent OnMonsterDied;
 
-    //public static Action<Enemy> OnMonsterDiedAct; ∞∞¿∫ ¿«πÃ¿”
-
-    private void Update()
+    public void Move(Vector2 direction, float delta)
     {
-        if (isInit && !isDead)
-            Move(Time.deltaTime, moveDir);
-    }
-
-    public void Move(float delta, Vector2 direction)
-    {
-        transform.Translate(direction * moveSpeed * delta);
+        transform.Translate(direction * delta * moveSpeed);
     }
 
     public void SetEnable(bool newEnable)
@@ -37,42 +27,39 @@ public class Enemy : MonoBehaviour, IMovement, IDamaged
         if (newEnable)
         {
             curHP = maxHP;
-            if(TryGetComponent<CircleCollider2D>(out CircleCollider2D col))
+            if (TryGetComponent<CircleCollider2D>(out CircleCollider2D col))
                 col.isTrigger = true;
         }
     }
 
-    public void TakeDamaged(GameObject attacker, int damage)
+    public void TakeDamage(GameObject attacker, int damage)
     {
-        if(!isDead )
+        if(!IsDead)
         {
             curHP -= damage;
             if (curHP <= 0)
                 OnDied();
             else
-                OnHit();
-
+                OnHitted();
         }
     }
 
     private void OnDied()
     {
         OnMonsterDied?.Invoke(this);
-        Destroy(gameObject); // << «Æ∏µ ª˝∑´.
-        // ¿Ã∆Â∆Æ ¿Áª˝
-        // æ∆¿Ã≈€ µÂ∂¯
-        // ¡°ºˆ ¡ı∞°  <- ¿Ã∑Ø∏È æ»µ 
+        Destroy(gameObject);        // ÌíÄÎßÅ ÏÉùÎûµ(Ï£ºÎßêÏóê Î≥¥Í∞ïÌïòÍ∏∞)
     }
 
-    private void OnHit()
+    private void OnHitted()
     {
-        StartCoroutine(ChangeColor());
+        // ÏÉâ Î≥ÄÍ≤ΩÏùÄ Ïï†ÎãàÎ©îÏù¥ÏÖòÏúºÎ°ú Ìï† ÏòàÏ†ï
     }
 
-    IEnumerator ChangeColor()
+    void Update()
     {
-        GetComponent<SpriteRenderer>().color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        GetComponent<SpriteRenderer>().color = Color.white;
+        if (isInit && !IsDead)
+        {
+            Move(moveDir, Time.deltaTime);
+        }
     }
 }

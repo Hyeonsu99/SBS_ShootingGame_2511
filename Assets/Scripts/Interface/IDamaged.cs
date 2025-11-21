@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public interface IDamaged
+public interface IDamaged 
 {
-    void TakeDamaged(GameObject attacker, int damage);
-
+    void TakeDamage(GameObject attacker, int damage);       // 대미지 스크립트(공격자와 데미지 추적)
 }

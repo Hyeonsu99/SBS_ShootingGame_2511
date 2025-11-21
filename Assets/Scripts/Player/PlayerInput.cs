@@ -2,31 +2,29 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour, IInputHandler
 {
-    private IInputHandler curInputHandler;
-
+    private IInputHandler curInput;
     private void Awake()
     {
-#if UNITY_STANDALONE || UNITY_EDITOR // PC 빌드 & 에디터
-        curInputHandler = GetComponent<InputKeyboard>() as IInputHandler;
+#if UNITY_STANDALONE || UNITY_EDITOR    // PC빌드 & 에디터
+        curInput = GetComponent<Input_Keyboard>() as IInputHandler;
 #endif
 
-#if UNITY_ANDROID || UNITY_IOS // 
-curInputHandler = GetComponent<InputJoystick>() as IInputHandler;
+#if UNITY_ANDROID || UNITY_IOS          // 안드로이드
+        curInput = GetComponent<Input_Joystick>() as IInputHandler;
 #endif
     }
-
     public Vector2 GetInput()
     {
-        if (curInputHandler == null)
+        if (curInput == null)
         {
-            Debug.Log("PlayerInput.cs - GetInput() - curInputHandle is null");
+            Debug.Log("PlayerInput.cs - GetInput() - curInput is Null");
             return Vector2.zero;
         }
-        return curInputHandler.GetInput();
+        return curInput.GetInput();
     }
 
-    private void Update()
+    void Update()
     {
-        //Debug.Log($"입력값 확인 : {GetInput()}");
+        //Debug.Log($"Input Check : {GetInput()}");
     }
 }

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-// ÅÛÇÃ¸´ -> Á¦³×¸¯
+// Á¦³×¸¯ ½Ì±ÛÅæ
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public static T instance {  get; private set; }
+    public static T instance { get; private set; }
 
     private void Awake()
     {
@@ -12,16 +12,14 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             instance = this as T;
         }
         else
-        {
             Destroy(gameObject);
-        }
-        DoAwake();
+        OnAwake();
     }
 
-    protected virtual void DoAwake() { }
+    protected virtual void OnAwake() { }
 }
 
-public class SingletinDontDestroy<T> : MonoBehaviour where T : MonoBehaviour
+public class SingletonDontDestroy<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T instance { get; private set; }
 
@@ -33,11 +31,9 @@ public class SingletinDontDestroy<T> : MonoBehaviour where T : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else
-        {
             Destroy(gameObject);
-        }
-        DoAwake();
+        OnAwake();
     }
 
-    protected virtual void DoAwake() { }
+    protected virtual void OnAwake() { }
 }

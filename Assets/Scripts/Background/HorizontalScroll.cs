@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class HorizontalScroll : MonoBehaviour, IScroller
 {
-    [SerializeField] private float scrollSpeed = 0f;
-    private Vector3 startPos = new Vector3(0, 12.75f, 0f);
+    [SerializeField] private float scrollSpeed = 0;
+    private Vector3 startPos = new Vector3(0f, 12.75f, 0f);
     private float resetPositionY = -12.75f;
-
     public void ResetPosition()
     {
         transform.position = startPos;

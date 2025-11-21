@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - DestroyArea
   - Enemy
+  - DestroyArea
   layers:
   - Default
   - TransparentFX
@@ -13,9 +13,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Character
-  - Projectile
-  - PickupItem
+  - 
+  - test1
+  - test2
   - 
   - 
   - 

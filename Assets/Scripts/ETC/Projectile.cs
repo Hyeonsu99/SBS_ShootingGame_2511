@@ -1,16 +1,12 @@
 using UnityEngine;
 
-
-// ÁöÁ¤µÈ ¹æÇâÀ¸·Î ÁöÁ¤µÈ ¼Óµµ·Î Áö¼ÓÀûÀ¸·Î ÀÌµ¿ÇÏ´Â ±â´É
-// ¹ß»ç½ÃÄÑÁØ owner ÁÖÃ¼¿Í ´Ù¸¥ ÆÀÀÇ ´ë»ó°ú ´ê¾ÒÀ» ¶§, »ó´ë¹æ¿¡°Ô µ¥¹ÌÁö Àü´Ş
-
+// ì§€ì •ëœ ë°©í–¥ìœ¼ë¡œ ì§€ì •ëœ ì†ë„ë¡œ ì§€ì† ì´ë™
+// ë°œì‚¬ì‹œì¼œì¤€ owner ì£¼ì²´ì™€ ë‹¤ë¥¸ íŒ€ì˜ ëŒ€ìƒê³¼ ë‹¿ì•˜ì„ ë•Œ ë°ë¯¸ì§€
 [RequireComponent(typeof(CircleCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Projectile : MonoBehaviour, IMovement
 {
-    // ¼±ÅÃ »çÇ×
-    // Àü¿ª °ø°£¿¡¼­ ¾µ ¼öµµ ÀÖÀ½
-    public enum projectileType
+    public enum Type
     {
         player01,
         player02,
@@ -20,10 +16,9 @@ public class Projectile : MonoBehaviour, IMovement
         boss03
     }
 
-    // ½ºÅ©¸³ÅÍºí ¿ÀºêÁ§Æ® 
-    // µ¥ÀÌÅÍ ¸Å´ÏÀú
+    // DI : ì˜ì¡´ì„± ì£¼ì… íŒ¨í„´
+    // ê°ì²´ê°€ ì‚¬ìš©ì„ í•„ìš”ë¡œ í•˜ëŠ” ì •ë³´ë¥¼ ì™¸ë¶€ì—ì„œ ì£¼ì…í•´ì£¼ëŠ” íŒ¨í„´
 
-    // DI ÀÇÁ¸¼º ÁÖÀÔ
     private float moveSpeed = 10f;
     private int damage;
     private Vector2 moveDir;
@@ -31,62 +26,53 @@ public class Projectile : MonoBehaviour, IMovement
     private string ownerTag;
 
     private bool isInit = false;
-    private projectileType type;
-
-    // ÀıÂ÷ÁöÇâÀû ÇÁ·Î±×·¡¹Ö
-    // °´Ã¼ÁöÇâÀû ÇÁ·Î±×·¡¹Ö
-    // DI ÀÇÁ¸¼º ÁÖÀÔ
-
-    // Data-Driven Programming
+    private Type type;
 
     private void Awake()
     {
-        if(TryGetComponent<CircleCollider2D>(out CircleCollider2D col))
+        if (TryGetComponent<CircleCollider2D>(out CircleCollider2D col))
         {
             col.radius = 0.1f;
             col.isTrigger = true;
         }
-        if(TryGetComponent<Rigidbody2D>(out Rigidbody2D rig))
-        {
-            rig.gravityScale = 0f;
-        }
+        if (TryGetComponent<Rigidbody2D>(out Rigidbody2D body))
+            body.gravityScale = 0;
     }
-    public void InitProjectile(projectileType newtype,
-                               Vector2 newDir,
-                               GameObject newOwner,
-                               int newDamage,
-                               float newSpeed)
+
+    // ì™¸ë¶€ ë°ì´í„° ì£¼ì…
+    public void Initialize(Type newType, Vector2 newDir, GameObject newOwner, int newDmg, float newSpeed)
     {
-        type = newtype;
+        type = newType;
         moveDir = newDir;
         owner = newOwner;
-        ownerTag = owner.name;
-        damage = newDamage;
+        ownerTag = owner.tag;
+        damage = newDmg;
         moveSpeed = newSpeed;
         SetEnable(true);
     }
-
     private void Update()
     {
-        if(isInit)
-            Move(Time.deltaTime, moveDir); // Àß¸øµÈ ¿¹Á¦...
+        if (!isInit)
+            return;
+        Move(moveDir, Time.deltaTime);          // ì˜ëª»ëœ êµ¬ì¡°
     }
-    public void Move(float delta, Vector2 direction)
+    public void Move(Vector2 direction, float delta)
     {
-        transform.Translate(direction * (moveSpeed * delta));
+        transform.Translate(direction * moveSpeed * delta);
     }
-
     public void SetEnable(bool newEnable)
     {
-        //Á¶°Ç Ã¼Å© ÇÊ¿äÇÑ °æ¿ìµµ ÀÖ¾î¼­.
-        isInit = true;
+        // ì¡°ê±´ ì²´í¬ê°€ í•„ìš”í•˜ê¸°ë„ í•¨
+        isInit = newEnable;
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == owner)
-            return; // ¾ó¸® ¸®ÅÏ
-        if (collision.CompareTag(ownerTag)) // º¸½º°¡ ½ğ Åõ»çÃ¼¸¦ ¸ó½ºÅÍµéÀÌ ¸ÂÀ¸¸é ¾ÈµÇ´Ï±î
+        // return ì„ ë¨¼ì € ë„ìš°ëŠ” ìŠ¤íƒ€ì¼ : early return
+        if (!isInit)
+            return;
+        if (collision.gameObject == owner)      // ìí­ ê¸ˆì§€
+            return;
+        if (collision.CompareTag(ownerTag))     // ì•„êµ° ì˜¤ì‚¬ ê¸ˆì§€
             return;
 
         if(collision.CompareTag("DestroyArea"))
@@ -94,11 +80,10 @@ public class Projectile : MonoBehaviour, IMovement
             ProjectileManager.instance.ReturnProjectileToPool(this, type);
             return;
         }
-
-        //³ª¸ÓÁö »óÈ²
-        if (collision.TryGetComponent<IDamaged>(out IDamaged component))
+        
+        if(collision.TryGetComponent<IDamaged>(out IDamaged component))
         {
-            component.TakeDamaged(owner, damage);
+            component.TakeDamage(owner, damage);
             ProjectileManager.instance.ReturnProjectileToPool(this, type);
             return;
         }
