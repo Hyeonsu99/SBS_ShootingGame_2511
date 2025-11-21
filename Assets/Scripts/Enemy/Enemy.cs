@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -52,7 +53,19 @@ public class Enemy : MonoBehaviour, IMovement, IDamaged
 
     private void OnHitted()
     {
+        StartCoroutine(ChangeColor());
         // 색 변경은 애니메이션으로 할 예정
+    }
+
+    IEnumerator ChangeColor()
+    {
+        var waitTime = new WaitForSeconds(0.1f);
+
+        GetComponent<SpriteRenderer>().color = Color.red;
+
+        yield return waitTime;
+
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     void Update()
@@ -62,4 +75,6 @@ public class Enemy : MonoBehaviour, IMovement, IDamaged
             Move(moveDir, Time.deltaTime);
         }
     }
+
+    
 }
