@@ -4,7 +4,7 @@ using UnityEngine;
 public class ProjectileManager : Singleton<ProjectileManager>
 {
     [SerializeField] private GameObject[] projectilePrefabs;
-    private static Queue<Projectile>[] projectiles;
+    public static Queue<Projectile>[] projectiles;
     private int poolSize = 10;
 
     // stage 1 : p1p2p3 b1
@@ -28,7 +28,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
     {
         GameObject go;
 
-        for(int i =0; i < poolSize; ++i)
+        for(int i = 0; i < poolSize; ++i)
         {
             go = Instantiate(projectilePrefabs[(int)type]);
 

@@ -4,15 +4,18 @@ using UnityEngine;
 public class BattleSceneManager : MonoBehaviour
 {
     private IManager playerManager;
-
+    private IManager scrollManager;
     private void Awake()
     {
         GameObject obj;    
 
         obj = GameObject.Find("Player");
-
         if(obj != null)
             playerManager = obj.GetComponent<IManager>();
+
+        obj = GameObject.Find("ScrollManager");
+        if (obj != null)
+            scrollManager = obj.GetComponent<IManager>();
 
         StartCoroutine(Gamestart());
     }
@@ -24,6 +27,7 @@ public class BattleSceneManager : MonoBehaviour
         yield return null;
 
         playerManager?.GameInitialize();
+        scrollManager?.GameInitialize();
 
         for(int i = 5; i >= 0; i--)
         {
@@ -32,7 +36,8 @@ public class BattleSceneManager : MonoBehaviour
         }
 
         isPlaying = true;
-        playerManager.GameStart();
+        playerManager?.GameStart();
+        scrollManager?.GameStart();
         
         yield return new WaitForSeconds(2f);
     }
@@ -42,6 +47,7 @@ public class BattleSceneManager : MonoBehaviour
         if(isPlaying)
         {
             playerManager?.GameTick(Time.deltaTime);
+            scrollManager?.GameTick(Time.deltaTime);    
         }
     }
 }
