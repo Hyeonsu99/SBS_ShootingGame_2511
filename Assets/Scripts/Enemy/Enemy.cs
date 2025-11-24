@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour, IMovement, IDamaged
             curHP = maxHP;
             if (TryGetComponent<CircleCollider2D>(out CircleCollider2D col))
                 col.isTrigger = true;
+           
         }
     }
 
@@ -47,7 +48,7 @@ public class Enemy : MonoBehaviour, IMovement, IDamaged
 
     private void OnDied()
     {
-        OnMonsterDied?.Invoke(this);
+        OnMonsterDied?.Invoke(this);      
         Destroy(gameObject);        // 풀링 생략(주말에 보강하기)
     }
 

@@ -6,6 +6,7 @@ public class EnemySpawnManager : MonoBehaviour, IManager
 {
     [SerializeField] private Transform[] spawnTrans;
     [SerializeField] private GameObject[] spawnPrefabs;
+    [SerializeField] private GameObject[] spawnBossPrefabs;
 
     public static Action OnSpawnFinish; // 일반 몬스터 스폰이 종료됨을 알림
 
@@ -43,7 +44,10 @@ public class EnemySpawnManager : MonoBehaviour, IManager
     public void GameTick(float delta)
     {
     }
+
     private GameObject go;
+    private BossAI bossAI;
+
     IEnumerator StartWave()
     {
         while (spawnCount > 0)
@@ -63,11 +67,32 @@ public class EnemySpawnManager : MonoBehaviour, IManager
 
         // 보스 생성
 
+        go = Instantiate(spawnBossPrefabs[spawnLevel], new Vector3(0f, 8f, 0f), Quaternion.identity);
+
+        if (go.TryGetComponent<BossAI>(out bossAI))
+        {
+            IWeapon[] weapons = new IWeapon[] { new BossWeapon01(), new BossWeapon02() };
+
+            foreach (IWeapon weapon in weapons)
+            {
+                weapon.SetOwner(go);
+            }
+
+            bossAI.InitBoss("무지막지한 보스", 500, weapons);
+            bossAI.OnBossDied += NextLevel;
+        }
+
         spawnLevel++;
         if(spawnLevel >= 3)
         {
             spawnLevel = 0;
         }
         spawnCount = 7;
+    }
+
+    private void NextLevel()
+    {
+        bossAI.OnBossDied -= NextLevel;
+        StartCoroutine(StartWave());
     }
 }

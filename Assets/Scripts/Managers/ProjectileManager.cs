@@ -17,7 +17,6 @@ public class ProjectileManager : Singleton<ProjectileManager>
         }
     }
 
-    // 스테이지마다 등장시킬 종류가 다를 경우에는 수정이 필요한 코드
     private void Allocate(Projectile.Type type)
     {
         GameObject go;

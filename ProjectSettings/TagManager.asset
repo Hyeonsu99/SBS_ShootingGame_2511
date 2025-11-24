@@ -13,9 +13,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - test1
-  - test2
+  - PickupItem
+  - Character
+  - Projectile
   - 
   - 
   - 
