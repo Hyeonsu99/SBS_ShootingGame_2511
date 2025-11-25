@@ -52,7 +52,7 @@ public class Drop_Gem : MonoBehaviour, IPickup
 
             if(pickupTime > 1f)
             {
-                //OnPickupGem.Invoke(); // 이벤트 발생
+                OnPickupGem.Invoke(); // 이벤트 발생
                 Destroy(gameObject);  // 자기 자신 파괴
             }
         }

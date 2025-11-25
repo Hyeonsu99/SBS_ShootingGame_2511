@@ -6,6 +6,7 @@ public class BattleSceneManager : MonoBehaviour
     private IManager playerManager;
     private IManager scrollManager;
     private IManager spawnManager;
+    private IManager scoreManager;
 
     private void Awake()
     {
@@ -19,6 +20,9 @@ public class BattleSceneManager : MonoBehaviour
         go = GameObject.Find("SpawnManager");
         if (go != null)
             go.TryGetComponent<IManager>(out spawnManager);
+        go = GameObject.Find("ScoreManager");
+        if (go != null)
+            go.TryGetComponent<IManager>(out scoreManager);
         StartCoroutine("GameStart");
     }
 
@@ -30,6 +34,7 @@ public class BattleSceneManager : MonoBehaviour
         playerManager?.GameInitialize();
         scrollManager?.GameInitialize();
         spawnManager?.GameInitialize();
+        scoreManager?.GameInitialize();
 
         for (int i = 5; i >= 0; --i)
         {
@@ -40,6 +45,7 @@ public class BattleSceneManager : MonoBehaviour
         isPlaying = true;
         playerManager?.GameStart();
         scrollManager?.GameStart();
+        scoreManager?.GameStart();
         yield return new WaitForSeconds(2f);
         spawnManager?.GameStart();
     }
