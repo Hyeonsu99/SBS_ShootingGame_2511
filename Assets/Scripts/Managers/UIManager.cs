@@ -8,11 +8,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI bombText;
 
+    [SerializeField] Image[] playerHeart;
+
     private void OnEnable()
     {
         ScoreManager.OnChangeGameScore += ChangeScoreText;
         ScoreManager.OnChangeGemCount += ChangeGemCountText;
         ScoreManager.OnChangePlayerBomb += ChangeBombText;
+        ScoreManager.OnChangePlayerHP += ChangeHPImage;
     }
 
     private void OnDisable()
@@ -20,6 +23,7 @@ public class UIManager : MonoBehaviour
         ScoreManager.OnChangeGameScore -= ChangeScoreText;
         ScoreManager.OnChangeGemCount -= ChangeGemCountText;
         ScoreManager.OnChangePlayerBomb -= ChangeBombText;
+        ScoreManager.OnChangePlayerHP -= ChangeHPImage;
     }
 
 
@@ -36,5 +40,20 @@ public class UIManager : MonoBehaviour
     private void ChangeBombText(int score)
     {
         bombText.text = $"{score}";
+    }
+
+    private void ChangeHPImage(int curHP)
+    {
+        for(int i = 0; i < 5; ++i)
+        {
+            if(i < curHP)
+            {
+                playerHeart[i].enabled = true;
+            }
+            else
+            {
+                playerHeart[i].enabled = false;
+            }
+        }
     }
 }

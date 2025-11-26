@@ -55,6 +55,9 @@ public class ScoreManager : MonoBehaviour, IManager
         }
     }
 
+    public bool isDead => curHP <= 0;
+ 
+
     public void GameInitialize()
     {
         SetGameScore = 0;
@@ -92,26 +95,25 @@ public class ScoreManager : MonoBehaviour, IManager
     {
         Enemy.OnMonsterDied += HandleMonsterDied;
         Drop_Gem.OnPickupGem += HandleGemPickup;
+        PlayerHitBox.OnPlayerHPIncreased += HandleChangeHP;
     }
 
     private void OnDisable()
     {
         Enemy.OnMonsterDied -= HandleMonsterDied;
         Drop_Gem.OnPickupGem -= HandleGemPickup;
+        PlayerHitBox.OnPlayerHPIncreased -= HandleChangeHP;
     }
 
     private void HandleMonsterDied(Enemy enemyInfo)
     {
         SetGameScore = Score + 5;
-        Debug.Log($"점수 확인 : {Score}");
     }
 
     private void HandleGemPickup()
     {
         SetGameScore = Score + 3;
         SetGemCount = GemCount + 1;
-        Debug.Log($"점수 확인 : {Score}");
-        Debug.Log($"보석 확인 : {GemCount}");
     }
 
     private void HandleChangeHP(bool isIncreased)
@@ -128,14 +130,22 @@ public class ScoreManager : MonoBehaviour, IManager
 
     public void IncreaseHP()
     {
+        if (isDead)
+            return;
+
         curHP++;
         if (curHP >= maxHP)
             curHP = maxHP;
         OnChangePlayerHP?.Invoke(curHP);
+
+        Debug.Log($"체력 증가");
     }
 
     public void DecreaseHP()
     {
+        if (isDead)
+            return;
+
         curHP--;
         if (curHP <= 0)
         {
@@ -143,6 +153,8 @@ public class ScoreManager : MonoBehaviour, IManager
             OnPlayerDied?.Invoke();
         }
         OnChangePlayerHP?.Invoke(curHP);
+
+        Debug.Log($"체력 감소");
     }
 
     public void IncreaseBomb()
