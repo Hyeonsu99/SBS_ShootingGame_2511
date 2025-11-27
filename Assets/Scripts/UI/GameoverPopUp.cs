@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameoverPopUp : MonoBehaviour
 {
@@ -18,7 +19,12 @@ public class GameoverPopUp : MonoBehaviour
 
     private void OnEnable()
     {
+        buttonObj.TryGetComponent<Button>(out Button btn);
+        {
+            btn?.onClick.AddListener(LoadLobbyScene);
+        }
         ScoreManager.OnPlayerDied += HandlePlayerDied;
+
     }
 
     private void OnDisable()
@@ -38,7 +44,7 @@ public class GameoverPopUp : MonoBehaviour
     private void LoadLobbyScene()
     {
         PlayerPrefs.SetString("NextSceneName", "LobbyScene"); // << Android, IOS, PC 모든 운영체제에서 각각의 저장소 경로가 나누어져 있다. Unity Manual에 적혀 있다... ,
-                                                              // 임시 저장소에 저장(클라이언트가 꺼지기 전까지) , 유니티 에디터가 꺼질 때 ROM(각 운영체제에서 설정한 위치에 저장됨
+        PlayerPrefs.Save();                         // 임시 저장소에 저장(클라이언트가 꺼지기 전까지) , 유니티 에디터가 꺼질 때 ROM(각 운영체제에서 설정한 위치에 저장됨
         SceneManager.LoadScene("LoadingScene");
     }
 }
