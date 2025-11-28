@@ -113,6 +113,7 @@ public class ScoreManager : MonoBehaviour, IManager
     private void HandleGemPickup()
     {
         SetGameScore = Score + 3;
+        SoundManager.instance.PlaySFX(SfxType.SFX_GetPickup);
         SetGemCount = GemCount + 1;
     }
 

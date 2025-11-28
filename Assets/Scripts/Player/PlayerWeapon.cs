@@ -36,6 +36,8 @@ public class PlayerWeapon : MonoBehaviour, IWeapon
             return;
         //
         nextFireTime = Time.time + fireRate;
+        SoundManager.instance.PlaySFX(SfxType.SFX_PlayerFire);
+
         startAngle = -spreadAngle * (numOfProjectiles - 1) / 2f;
         for (int i = 0; i < numOfProjectiles; ++i)
         {

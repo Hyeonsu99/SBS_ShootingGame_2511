@@ -36,12 +36,10 @@ public class OptionPopup : MonoBehaviour
 
         //PlayerPrefs.SetString("Test", saveData);
 
-        string valueS = PlayerPrefs.GetString("Test");
-        test = JsonUtility.FromJson<testValue>(valueS);
-        Debug.Log($"A : {test.valueA} , B : {test.valueB}");
+        //string valueS = PlayerPrefs.GetString("Test");
+        //test = JsonUtility.FromJson<testValue>(valueS);
+        //Debug.Log($"A : {test.valueA} , B : {test.valueB}");
        
-
-        
         // πË∞Ê¿Ω
         float values = PlayerPrefs.GetFloat(SoundType.BGM_Volume.ToString(), 1.0f);
         bgmSlider.value = values;

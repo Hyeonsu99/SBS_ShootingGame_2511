@@ -48,7 +48,8 @@ public class Enemy : MonoBehaviour, IMovement, IDamaged
 
     private void OnDied()
     {
-        OnMonsterDied?.Invoke(this);      
+        OnMonsterDied?.Invoke(this);
+        SoundManager.instance.PlaySFX(SfxType.SFX_EnemyDie);
         Destroy(gameObject);        // 풀링 생략(주말에 보강하기)
     }
 
